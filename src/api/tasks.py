@@ -1,6 +1,8 @@
+import asyncio
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
 
 from api.dependencies import current_user, get_task_service
 from exceptions import NotFoundException
@@ -12,12 +14,14 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 
 @router.get("")
+@cache(expire=60)
 async def get_tasks(
     task_service: Annotated[TaskService, Depends(get_task_service)],
     user: UserRead = Depends(current_user)
 ) -> list[TaskRead]:
     user_id = user.id
     tasks = await task_service.get_tasks(user_id=user_id)
+    await asyncio.sleep(3)
     return tasks
 
 
