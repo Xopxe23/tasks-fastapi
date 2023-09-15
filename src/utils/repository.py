@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from sqlalchemy import insert, select
+from sqlalchemy import delete, insert, select, update
 
 from db.db import async_session_maker
 
@@ -19,6 +19,14 @@ class AbstractRepository(ABC):
     def add_one(self, data: dict) -> int:
         pass
 
+    @abstractmethod
+    def edit_one(self, id: int, data: dict) -> int:
+        pass
+
+    @abstractmethod
+    def delete_one(self, id: int) -> int:
+        pass
+
 
 class SQLAlchemyRepository(AbstractRepository):
     model = None
@@ -34,7 +42,7 @@ class SQLAlchemyRepository(AbstractRepository):
         async with async_session_maker() as session:
             stmt = select(self.model).filter_by(id=id, **filter_by)
             result = await session.execute(stmt)
-            return result.scalar_one().to_read_model()
+            return result.scalar_one_or_none()
 
     async def add_one(self, data: dict) -> int:
         async with async_session_maker() as session:
@@ -42,3 +50,17 @@ class SQLAlchemyRepository(AbstractRepository):
             result = await session.execute(stmt)
             await session.commit()
             return result.scalar_one()
+
+    async def edit_one(self, id: int, data: dict, **filter_by) -> int:
+        async with async_session_maker() as session:
+            stmt = update(self.model).values(**data).filter_by(id=id, **filter_by).returning(self.model)
+            result = await session.execute(stmt)
+            await session.commit()
+            return result.scalar_one_or_none()
+
+    async def delete_one(self, id: int, **filter_by) -> int:
+        async with async_session_maker() as session:
+            stmt = delete(self.model).filter_by(id=id, **filter_by).returning(self.model.id)
+            task_id = await session.execute(stmt)
+            await session.commit()
+            return task_id

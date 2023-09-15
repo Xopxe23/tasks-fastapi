@@ -1,4 +1,4 @@
-from schemas.tasks import TaskCreate, TaskRead
+from schemas.tasks import TaskCreate, TaskRead, TaskUpdate
 from utils.repository import AbstractRepository
 
 
@@ -19,3 +19,11 @@ class TaskService:
         task_data["user_id"] = user_id
         task_id = await self.tasks_repo.add_one(task_data)
         return task_id
+
+    async def edit_task(self, id: int, user_id: int, task: TaskUpdate) -> TaskRead:
+        task_data = task.model_dump()
+        task = await self.tasks_repo.edit_one(id=id, data=task_data, user_id=user_id)
+        return task
+
+    async def delete_task(self, id: int, user_id: int) -> int:
+        await self.tasks_repo.delete_one(id=id, user_id=user_id)
