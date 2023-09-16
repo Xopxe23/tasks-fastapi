@@ -4,7 +4,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 
-from api.routers import routers
+from src.api.routers import routers
 
 app = FastAPI(
     title="Tasks App"

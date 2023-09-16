@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db.db import Base
-from schemas.tasks import TaskRead
+from src.db.db import Base
+from src.schemas.tasks import TaskRead
 
 
 class Task(Base):

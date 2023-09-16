@@ -4,11 +4,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
 
-from api.dependencies import current_user, get_task_service
-from exceptions import NotFoundException
-from schemas.tasks import TaskCreate, TaskRead, TasksCreateResponse, TaskUpdate
-from schemas.users import UserRead
-from services.tasks import TaskService
+from src.api.dependencies import current_active_verified_user, get_task_service
+from src.schemas.tasks import (TaskCreate, TaskRead, TasksCreateResponse,
+                               TaskUpdate)
+from src.schemas.users import UserRead
+from src.services.tasks import TaskService
+from src.utils.exceptions import NotFoundException
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -17,7 +18,7 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 @cache(expire=60)
 async def get_tasks(
     task_service: Annotated[TaskService, Depends(get_task_service)],
-    user: UserRead = Depends(current_user)
+    user: UserRead = Depends(current_active_verified_user)
 ) -> list[TaskRead]:
     user_id = user.id
     tasks = await task_service.get_tasks(user_id=user_id)
@@ -29,7 +30,7 @@ async def get_tasks(
 async def get_task_by_id(
     task_id: int,
     task_service: Annotated[TaskService, Depends(get_task_service)],
-    user: UserRead = Depends(current_user)
+    user: UserRead = Depends(current_active_verified_user)
 ) -> TaskRead:
     task = await task_service.get_task_by_id(id=task_id, user_id=user.id)
     if not task:
@@ -41,7 +42,7 @@ async def get_task_by_id(
 async def add_task(
     task: TaskCreate,
     task_service: Annotated[TaskService, Depends(get_task_service)],
-    user: UserRead = Depends(current_user)
+    user: UserRead = Depends(current_active_verified_user)
 ) -> TasksCreateResponse:
     user_id = user.id
     task_id = await task_service.add_task(task=task, user_id=user_id)
@@ -53,7 +54,7 @@ async def update_task(
     task_id: int,
     task: TaskUpdate,
     task_service: Annotated[TaskService, Depends(get_task_service)],
-    user: UserRead = Depends(current_user)
+    user: UserRead = Depends(current_active_verified_user)
 ) -> TaskRead:
     user_id = user.id
     task = await task_service.edit_task(id=task_id, user_id=user_id, task=task)
@@ -66,7 +67,7 @@ async def update_task(
 async def delete_task(
     task_id: int,
     task_service: Annotated[TaskService, Depends(get_task_service)],
-    user: UserRead = Depends(current_user)
+    user: UserRead = Depends(current_active_verified_user)
 ) -> str:
     task_id = await task_service.delete_task(id=task_id, user_id=user.id)
     if not task_id:

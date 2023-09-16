@@ -1,5 +1,5 @@
-from schemas.tasks import TaskCreate, TaskRead, TaskUpdate
-from utils.repository import AbstractRepository
+from src.schemas.tasks import TaskCreate, TaskRead, TaskUpdate
+from src.utils.repository import AbstractRepository
 
 
 class TaskService:
