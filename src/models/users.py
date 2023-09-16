@@ -4,7 +4,7 @@ from fastapi_users_db_sqlalchemy import (SQLAlchemyBaseUserTable,
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.db.db import Base, get_async_session
+from db.db import Base, get_async_session
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
