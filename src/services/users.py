@@ -3,9 +3,9 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 
-from config import settings
-from models.users import User, get_user_db
-from tasks.tasks import sent_verification_email
+from src.config import settings
+from src.models.users import User, get_user_db
+from src.tasks.tasks import sent_verification_email
 
 SECRET = settings.SECRET
 
@@ -22,6 +22,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
         sent_verification_email.delay(user.email, token)
+
 
 async def get_user_manager(user_db=Depends(get_user_db)):
     yield UserManager(user_db)

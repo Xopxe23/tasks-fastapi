@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
-from db.db import async_session_maker
-from models.tasks import Task
-from utils.repository import SQLAlchemyRepository
+from src.db.db import async_session_maker
+from src.models.tasks import Task
+from src.utils.repository import SQLAlchemyRepository
 
 
 class TaskRepository(SQLAlchemyRepository):

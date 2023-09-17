@@ -2,7 +2,7 @@ from email.message import EmailMessage
 
 from pydantic import EmailStr
 
-from config import settings
+from src.config import settings
 
 
 def create_email_verification_template(

@@ -4,7 +4,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 
-from api.routers import routers
+from src.api.routers import routers
 
 app = FastAPI(
     title="Tasks App"
@@ -20,5 +20,5 @@ async def startup():
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
 
-if __name__ == "__main__":
-    uvicorn.run(app="main:app", reload=True)
+# if __name__ == "__main__":
+#     uvicorn.run(app="main:app", reload=True)

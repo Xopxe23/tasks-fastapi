@@ -2,9 +2,9 @@ import smtplib
 
 from pydantic import EmailStr
 
-from config import settings
-from tasks.celery import celery
-from tasks.email_temolates import create_email_verification_template
+from src.config import settings
+from src.tasks.celery import celery
+from src.tasks.email_temolates import create_email_verification_template
 
 
 @celery.task

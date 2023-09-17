@@ -3,5 +3,5 @@ from celery import Celery
 celery = Celery(
     "tasks",
     broker="redis://localhost:6379",
-    include=["tasks.tasks"]
+    include=["src.tasks.tasks"]
 )
