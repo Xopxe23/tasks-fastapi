@@ -69,7 +69,6 @@ async def delete_task(
     task_service: Annotated[TaskService, Depends(get_task_service)],
     user: UserRead = Depends(current_active_verified_user)
 ) -> str:
-    task_id = await task_service.delete_task(id=task_id, user_id=user.id)
-    if not task_id:
-        raise NotFoundException
+    user_id = user.id
+    task_id = await task_service.delete_task(id=task_id, user_id=user_id)
     return f"Task with id: {task_id} deleted"

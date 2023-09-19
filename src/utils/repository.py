@@ -63,4 +63,4 @@ class SQLAlchemyRepository(AbstractRepository):
             stmt = delete(self.model).filter_by(id=id, **filter_by).returning(self.model.id)
             task_id = await session.execute(stmt)
             await session.commit()
-            return task_id
+            return task_id.scalar_one()

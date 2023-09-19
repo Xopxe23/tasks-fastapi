@@ -26,4 +26,5 @@ class TaskService:
         return task
 
     async def delete_task(self, id: int, user_id: int) -> int:
-        await self.tasks_repo.delete_one(id=id, user_id=user_id)
+        task_id = await self.tasks_repo.delete_one(id=id, user_id=user_id)
+        return task_id
