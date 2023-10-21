@@ -2,12 +2,15 @@ from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
+from httpx_oauth.clients.discord import DiscordOAuth2
 
 from src.config import settings
 from src.models.users import User, get_user_db
 from src.tasks.tasks import sent_verification_email
 
 SECRET = settings.SECRET
+
+discord_oauth_client = DiscordOAuth2("1165180777366040626", "cjp0fSOsLyat3vZXRKipZxMds4aDhCVS")
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):

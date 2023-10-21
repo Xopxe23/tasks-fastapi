@@ -6,7 +6,6 @@ from sqlalchemy.orm import DeclarativeBase
 
 from src.config import settings
 
-
 DATABASE_URL = (f"postgresql+asyncpg:"
                 f"//{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}")
 

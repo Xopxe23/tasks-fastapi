@@ -5,11 +5,11 @@ from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
 
 from src.api.dependencies import current_active_verified_user, get_task_service
+from src.exceptions import NotFoundException
 from src.schemas.tasks import (TaskCreate, TaskRead, TasksCreateResponse,
-                           TaskUpdate)
+                               TaskUpdate)
 from src.schemas.users import UserRead
 from src.services.tasks import TaskService
-from src.exceptions import NotFoundException
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
